@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/font-awesome/css/font-awesome";
+
+html,
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Helvetica,
+    Arial, sans-serif, “Apple Color Emoji”, “Segoe UI Emoji”, “Segoe UI Symbol”;
+    background: #FBF7F2;
+}
+
+:root {
+  --black: #3c4048;
+  --green: #038541;
+  --white: #ffffff;
+}

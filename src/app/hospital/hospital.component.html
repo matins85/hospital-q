@@ -1,0 +1,118 @@
+<div class="wrapper">
+
+    <div class="statistics-container">
+        <!--  -->
+        <div class="card">
+            <div class="top">
+                <div>
+                    <svg width="25" height="25" viewBox="0 0 41 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.0483 1.83683H11.4826C5.26056 1.83683 1.35938 6.24185 1.35938 12.4781V29.3009C1.35938 35.5372 5.24235 39.9422 11.4826 39.9422H29.3374C35.5797 39.9422 39.4627 35.5372 39.4627 29.3009V21.1505" stroke="#200E32" stroke-width="2.42812" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.6567 18.2911L28.7779 3.16992C30.6617 1.28813 33.7151 1.28813 35.5989 3.16992L38.0614 5.63245C39.9452 7.51627 39.9452 10.5717 38.0614 12.4535L22.8674 27.6475C22.0439 28.471 20.9269 28.9344 19.7614 28.9344H12.1816L12.3718 21.2858C12.4002 20.1607 12.8595 19.0883 13.6567 18.2911Z" stroke="#200E32" stroke-width="2.42812" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M26.4805 5.50628L35.7195 14.7453" stroke="#200E32" stroke-width="2.42812" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>                        
+                </div>
+                <div>Awaiting Patients</div>
+            </div>
+            <div class="bottom">
+                <div class="number">{{ peoples.length }}</div>
+            </div>
+        </div>
+        <!--  -->
+        <div class="card">
+            <div class="top">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                    </svg>
+                </div>
+                <div>Attended Patients</div>
+            </div>
+            <div class="bottom">
+                <div class="number">{{ total }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="time-p">
+        <div class="time" [class.time-red]="time < 11">{{ time }}</div>
+    </div>
+
+    <div class="patient-doctor">
+        <img src="assets/images/doctor-giving-corona-vaccine-to-girl.svg" alt="">
+        <div *ngIf="current">
+            <h5>Attending To</h5>
+            <p>{{ current?.name }} ({{ current?.phone }})</p>
+            <p>
+                <button (click)="serveNext()">Next Patient</button>
+            </p>
+        </div>
+        <div *ngIf="!current">
+            No Patients Available
+        </div>
+    </div>
+
+    <div class="table-header">
+        <div class="">
+            Patients
+        </div>
+        <button type="button" (click)="showDialog()">Add Patient</button>
+    </div>
+    <p-table [value]="peoples" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-people>
+            <tr>
+                <td>{{people.name}}</td>
+                <td>{{people.phone}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{peoples ? peoples.length : 0 }} Patients.
+            </div>
+        </ng-template>
+    </p-table>
+
+</div>
+
+
+<p-dialog [(visible)]="display">
+    <ng-template pTemplate="header">
+        Add Patient to Queue
+    </ng-template>
+    
+    <form novalidate="novalidate" [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()">
+        <p>
+            <span class="p-float-label">
+                <input id="float-input" type="text" matInput formControlName="name" pInputText required> 
+                <label for="float-input">Name</label>
+                <div class="error">{{formErrors.name}}</div>
+            </span>
+        </p>
+        <p>
+            <span class="p-float-label">
+                <input id="float-input" type="tel" matInput formControlName="phone" pInputText required> 
+                <label for="float-input">Phone Number</label>
+                <div class="error">{{formErrors.phone}}</div>
+            </span>
+        </p>
+
+        <div class="submit-button">
+            <button type="submit" mat-button class="submit">Submit</button>
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <div class="dialog-cancel" (click)="cancel()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+        </div>
+    </ng-template>
+</p-dialog>
